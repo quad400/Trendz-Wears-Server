@@ -7,7 +7,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from rest_framework.exceptions import NotFound
 from django.utils import timezone
-from django.contrib.auth import login, logout
+from django.contrib.auth import logout, authenticate
 from django.dispatch import Signal
 
 from rest_framework.response import Response
@@ -28,7 +28,7 @@ from .serializers import (
     LoginSerializer)
 from core.permissions import CurrentUserOrAdmin, CurrentUserOrAdminOrReadOnly
 from .email import ActivationEmail,ResendCodeEmail
-
+from .tokens import create_jwt_pair_for_user
 
 
 User = get_user_model()
@@ -111,7 +111,6 @@ class UserViewSet(viewsets.ModelViewSet):
         #     return Response({"message": "Check your internet connection"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             
 
-
     def perform_update(self, serializer):
         super().perform_update(serializer)
         user = serializer.instance
@@ -136,18 +135,27 @@ class UserViewSet(viewsets.ModelViewSet):
         """
             Use this endpoint to obtain user authentiation token
         """
+        email = request.data.get("email")
+        password = request.data.get("password")
 
-        serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid():
-            try:
-                user = serializer.user
-                print(user)
-                token, _ = Token.objects.get_or_create(user=user)
-                login(request, user)
-                Signal().send(sender=user.__class__, request=request, user=user)
-                return Response(data=TokenSerializer(token).data, status=200)
-            except Exception as e:
-                return Response({"message": "invalid user details"}, status=status.HTTP_400_BAD_REQUEST)
+        user = authenticate(email=email, password=password)
+
+        if user is not None:
+            tokens = create_jwt_pair_for_user(user)
+
+            return Response(data={
+                "message": "Login Successfully", 
+                "tokens": tokens
+            }, status=status.HTTP_200_OK)
+        else:
+            return Response({"message": "invalid user details"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # serializer = self.get_serializer(data=request.data)
+        # if serializer.is_valid():
+        #     try:
+        #         Signal().send(sender=user.__class__, request=request, user=user)
+        #         return Response(data=TokenSerializer(token).data, status=200)
+        #     except Exception as e:
 
     @action(["get", "put", "patch", "delete"], detail=False)
     def me(self, request, *args, **kwargs):

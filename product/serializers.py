@@ -29,9 +29,9 @@ class ProductColorSerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    product_images = ProductImageSerializer(many=True)
-    product_colors = ProductColorSerializer(many=True)
-    product_sizes = ProductSizeSerializer(many=True)
+    product_images = ProductImageSerializer(many=True, required=False)
+    product_colors = ProductColorSerializer(many=True, required=False)
+    product_sizes = ProductSizeSerializer(many=True, required=False)
 
     class Meta:
         model = Product

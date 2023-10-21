@@ -89,11 +89,15 @@ DATABASES = {
     }
 }
 
+
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        'rest_framework.authentication.TokenAuthentication',
-        # 'rest_framework.authentication.SessionAuthentication',
-    ]
+        "rest_framework_simplejwt.authentication.JWTAuthentication",   
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    # "DEFAULT_PERMISSION_CLASSES": [
+    #     "rest_framework.permissions.IsAuthenticated"
+    # ]
 }
 
 AUTH_USER_MODEL = 'authentication.UserAccount'
@@ -147,6 +151,13 @@ EMAIL_HOST_PASSWORD = "bgkzcmtigplwygxh"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME" : timedelta(hours=2),
+    "REFRESH_TOKEN_LIFETIME" : timedelta(days=1),
+    "SIGNING_KEY" : SECRET_KEY,
+    "AUTH_HEADER_TYPES": ('Bearer',),
+}
 
 
 # App config
