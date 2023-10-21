@@ -1,0 +1,6 @@
+Django==4.2.1
+djangorestframework==3.14.0
+django-shortuuidfield==0.1.3
+cloudinary
+djangorestframework-simplejwt==5.3.0
+Pillow

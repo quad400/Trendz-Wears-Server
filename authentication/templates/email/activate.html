@@ -1,0 +1,16 @@
+{% load i18n %}
+
+{% block subject %}
+{% blocktrans %}Welcome to KD Trendz, Please verify your email{% endblocktrans %}
+{% endblock subject %}
+
+{% block html_body %}
+<div>
+    <strong>Hello There!</strong>
+    <p>Thank you for signing up to KD Trendz</p>
+    <p>Your registration code is: <strong>{{ otp }}</strong></p>
+    <p>This code will expire in 3 minutes. If you did not sign up for an account, you can safely ignore this email.</p>
+    <strong>Best regards</strong>
+    <strong>The KD Trendz Team</strong>
+</div>
+{% endblock html_body %}
