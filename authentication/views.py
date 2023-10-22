@@ -235,35 +235,3 @@ class UserViewSet(viewsets.ModelViewSet):
         except NotFound: 
             return Response({"message": "Error occur while trying to create otp"}, status=status.HTTP_400_BAD_REQUEST)
         
-
-
-class UserDetailAPIView(APIView):
-
-    def get_jwt_details(self, auth):
-        secret = settings.SECRET_KEY
-        authorization_header = auth
-        if not authorization_header or not authorization_header.startswith('Bearer '):
-            return Response({"message": "Invalid header type or missing access token"}, status=status.HTTP_401_UNAUTHORIZED)
-        
-        access = authorization_header.split(" ")[1]
-
-        try:
-            decoded_data = jwt.decode(access, secret, algorithms=["HS256"])
-            return Response(decoded_data, status=status.HTTP_200_OK)
-
-        except jwt.ExpiredSignatureError:
-            return Response({"message":"Token has expired"}, status=status.HTTP_401_UNAUTHORIZED)
-        except jwt.InvalidTokenError:
-            return Response({"message":"Invalid token"}, status=status.HTTP_400_BAD_REQUEST)
-        except Exception as e:
-            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
-
-    def get(self, request, *args, **kwargs):
-        auth = request.META["HTTP_AUTHORIZATION"]
-        user_details = self.get_jwt_details(auth)
-        # id = user_details.user_id
-        print(user_details)
-        # user = get_object_or_404(User, id)
-        # print(user)
-        # return Response(user, status=HTTP_200_OK)
-
