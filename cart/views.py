@@ -27,7 +27,8 @@ class CartAPIView(APIView):
                 serializer = CartSerializer(data=request.data)
                 if not serializer.is_valid():
                     raise ValidationError("Cart details is not valid", status.HTTP_400_BAD_REQUEST)
-                serializer.save(cart_product=product[0], user=user)
+                print(product[0], serializer)
+                serializer.save(cart_product=product[0],user=user)
             
                 return Response({"message": "Sucessfully added product to cart"}, status=status.HTTP_200_OK)
             

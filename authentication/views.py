@@ -172,25 +172,31 @@ class UserViewSet(viewsets.ModelViewSet):
     @action(["post"], detail=True)
     def verify_otp(self, request, *args, **kwargs):
         id = kwargs["pk"]
-        instance = User.objects.get(id=id)
-        if (
-            not instance.is_active
-            and instance.otp == request.data.get("otp")
-            and instance.otp_expiry
-            and timezone.now() < instance.otp_expiry
-        ):
-            instance.is_active = True
-            instance.otp_expiry = None
-            instance.max_otp_try = settings.MAX_OTP_TRY
-            instance.otp_max_out = None
-            instance.save()
-            return Response(
-                {"message": "Successfully verified the user."}, status=status.HTTP_200_OK
+        try:
+            instance = User.objects.get(id=id)
+            if (
+                not instance.is_active
+                and instance.otp == request.data.get("otp")
+                and instance.otp_expiry
+                and timezone.now() < instance.otp_expiry
+            ):
+                instance.is_active = True
+                instance.otp_expiry = None
+                instance.max_otp_try = settings.MAX_OTP_TRY
+                instance.otp_max_out = None
+                instance.save()
+                return Response(
+                    {"message": "Successfully verified the user."}, status=status.HTTP_200_OK
+                )
+            return Response({
+                "message": "User active or Please enter the correct OTP."},
+                status=status.HTTP_400_BAD_REQUEST,
             )
-        return Response({
-            "message": "User active or Please enter the correct OTP."},
-            status=status.HTTP_400_BAD_REQUEST,
-        )
+        except NotFound:
+            return Response({
+                "message": "User does not exsist."},
+                status=status.HTTP_404_NOT_FOUND,
+            )
 
     @action(["post"], detail=True)    
     def generate_otp(self, request, *args, **kwargs):

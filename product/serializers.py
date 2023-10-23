@@ -8,12 +8,9 @@ class ProductImageSerializer(serializers.ModelSerializer):
         model = ProductImage
         fields = ("id", "image",)
 
-    # def create(self, validated_data):
-    #     product_images = validated_data.pop("product_images")
-    #     if Product.objects.filter(name=product_images.name).exists():
-    #         raise serializers.ValidationError("Product image already exist")
-    #     created_image = ProductImage.objects.create(product_images=product_images, **validated_data)
-    #     return created_image
+    def validate_image(self, attr):
+        if attr is None:
+            raise serializers.ValidationError({"invalid_detail": "This cant be null"}, code=400)
 
 
 class ProductSizeSerializer(serializers.ModelSerializer):
@@ -29,11 +26,15 @@ class ProductColorSerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    product_images = ProductImageSerializer(many=True, required=False)
-    product_colors = ProductColorSerializer(many=True, required=False)
-    product_sizes = ProductSizeSerializer(many=True, required=False)
+    product_images = ProductImageSerializer(many=True, required=False, read_only=True)
+    product_colors = ProductColorSerializer(many=True, required=False, read_only=True)
+    product_sizes = ProductSizeSerializer(many=True, required=False, read_only=True)
+    timestamp = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Product
         fields = ("id", "name", "desc", "category", "type", "price",
                    "product_sizes","product_images", "product_colors", "timestamp",)
+
+    def get_timestamp(self, obj):
+        return obj.timestamp.strftime('%Y-%m-%d')

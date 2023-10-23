@@ -10,6 +10,8 @@ class Cart(models.Model):
     id = ShortUUIDField(primary_key=True, editable=False, unique=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     cart_product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    cartsize = models.CharField(max_length=6)
+    cartcolor = models.CharField(max_length=10)
     ordered = models.BooleanField(default=False)
 
     def __str__(self) -> str:

@@ -78,7 +78,8 @@ class ProductImageListCreateAPIView(views.APIView):
 
             serializer = ProductImageSerializer(data=request.data)
             if serializer.is_valid():
-                serializer.save(image_product_id=id)
+                image = serializer.validated_data.pop("image")
+                serializer.save(image_product_id=id, image=image)
                 return Response({"message": "Successfully created product image"}, status=status.HTTP_201_CREATED)
             return Response({"message": "Invalid Product image data"}, status=status.HTTP_400_BAD_REQUEST)
         return Response({"message": "Product does not exist"}, status=status.HTTP_404_NOT_FOUND)
