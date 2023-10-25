@@ -6,3 +6,4 @@ djangorestframework-simplejwt==5.3.0
 Pillow
 drf-yasg
 python-dotenv
+gunicorn
