@@ -59,6 +59,8 @@ class UserViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         if self.action == "create":
             self.permission_class = permissions.AllowAny
+        if self.action == "login":
+            self.permission_class = permissions.AllowAny
         elif self.action == "activation":
             self.permission_class = permissions.AllowAny
         elif self.action == "resend_activation":

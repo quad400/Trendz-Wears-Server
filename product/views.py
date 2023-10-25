@@ -4,7 +4,7 @@ from rest_framework.permissions import (
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.generics import ListCreateAPIView
-from rest_framework import status,views
+from rest_framework import status,views, pagination, filters
 
 from .models import Product, ProductImage, ProductSizes, ProductColor
 from .serializers import ProductSerializer, ProductImageSerializer, ProductColorSerializer, ProductSizeSerializer
@@ -15,6 +15,9 @@ class ProductViewSet(ModelViewSet):
     permission_classes = [IsAdminUser, ]
     queryset = Product.objects.all()
     lookup_field = "pk"
+    pagination_class = pagination.LimitOffsetPagination
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name', 'desc']
 
     def get_queryset(self):
         queryset = super().get_queryset()
