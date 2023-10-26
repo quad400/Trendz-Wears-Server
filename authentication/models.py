@@ -3,7 +3,6 @@ from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser, PermissionsMixin)
 from django.core.validators import validate_email
 from shortuuidfield import ShortUUIDField
-from cloudinary.models import CloudinaryField
 
 
 # User authentication information
@@ -32,7 +31,7 @@ class UserAccountManager(BaseUserManager):
 
 class Image(models.Model):
     id = ShortUUIDField(primary_key=True, editable=False, unique=True)
-    image = CloudinaryField(width_field=300, height_field=300, resource_type="image")
+    image = models.ImageField(upload_to="/profile")
 
 
 class UserAccount(AbstractBaseUser,PermissionsMixin):
