@@ -1,5 +1,3 @@
-import requests
-import jwt
 import random
 from datetime import timedelta, datetime
 
@@ -19,14 +17,11 @@ from rest_framework.decorators import action
 from rest_framework.authtoken.models import Token
 
 
-from rest_framework_simplejwt.views import TokenObtainPairView
-
-
 from .serializers import (
-    UserCreateSerializer,TokenSerializer,
+    UserCreateSerializer,
     OTPSerializer, UserSerializer,
     LoginSerializer)
-from core.permissions import CurrentUserOrAdmin, CurrentUserOrAdminOrReadOnly
+from core.permissions import CurrentUserOrAdmin
 from .email import ActivationEmail,ResendCodeEmail
 from .tokens import create_jwt_pair_for_user
 
