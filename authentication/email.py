@@ -1,8 +1,5 @@
-from django.contrib.auth.tokens import default_token_generator
-from templated_mail.mail import BaseEmailMessage
 
-from djoser.conf import default_settings
-from djoser.utils import encode_uid
+from ..utils.email import BaseEmailMessage
 
 class ActivationEmail(BaseEmailMessage):
     template_name = "email/activation.html"
