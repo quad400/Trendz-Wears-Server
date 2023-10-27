@@ -14,7 +14,7 @@ import os
 from datetime import timedelta
 from pathlib import Path
 from dotenv import load_dotenv
-
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,9 +29,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 
-DEBUG =  os.getenv("DEBUG", "False").lower() == "true"
+DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 
-ALLOWED_HOSTS = ["127.0.0.1", "trendzy.onrender.com"]
+if not DEBUG:
+    ALLOWED_HOSTS = ["trendzy.onrender.com"]
+ALLOWED_HOSTS = []
 # ENV_ALLOWED_HOST = os.environ.get("ENV_ALLOWED_HOST")
 # ALLOWED_HOSTS = []
 # if ENV_ALLOWED_HOST:
@@ -41,7 +43,7 @@ ALLOWED_HOSTS = ["127.0.0.1", "trendzy.onrender.com"]
 # Application definition
 
 INSTALLED_APPS = [
-    
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -94,6 +96,13 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+if not DEBUG:
+    DATABASES = {
+        "default": dj_database_url.config(
+            default=os.getenv("DATABASE_URL"),
+            conn_max_age=600
+        )
+    }
 
 DATABASES = {
     'default': {
@@ -102,10 +111,9 @@ DATABASES = {
     }
 }
 
-
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework_simplejwt.authentication.JWTAuthentication",   
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
         'rest_framework.authentication.SessionAuthentication',
     ],
     # "DEFAULT_PERMISSION_CLASSES": [
@@ -156,6 +164,7 @@ if not DEBUG:
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
@@ -170,9 +179,9 @@ EMAIL_USE_TLS = True
 
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME" : timedelta(hours=2),
-    "REFRESH_TOKEN_LIFETIME" : timedelta(days=1),
-    "SIGNING_KEY" : SECRET_KEY,
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=2),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "SIGNING_KEY": SECRET_KEY,
     "AUTH_HEADER_TYPES": ('Bearer',),
 }
 
