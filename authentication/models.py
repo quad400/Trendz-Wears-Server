@@ -31,7 +31,7 @@ class UserAccountManager(BaseUserManager):
 
 class Image(models.Model):
     id = ShortUUIDField(primary_key=True, editable=False, unique=True)
-    image = models.ImageField(upload_to="/profile")
+    image = models.ImageField(upload_to="profile/")
 
 
 class UserAccount(AbstractBaseUser,PermissionsMixin):

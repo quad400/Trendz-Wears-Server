@@ -9,3 +9,5 @@ python-dotenv
 gunicorn
 django-templated-email
 whitenoise
+django-cors-headers
+dj-database-url

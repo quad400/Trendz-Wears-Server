@@ -28,11 +28,15 @@ load_dotenv(os.path.join(BASE_DIR, ".env"))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("SECRET_KEY")
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DEBUG")
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(" ")
+DEBUG =  os.getenv("DEBUG", "False").lower() == "true"
 
+ALLOWED_HOSTS = ["127.0.0.1", "trendzy.onrender.com"]
+# ENV_ALLOWED_HOST = os.environ.get("ENV_ALLOWED_HOST")
+# ALLOWED_HOSTS = []
+# if ENV_ALLOWED_HOST:
+#     ALLOWED_HOSTS = [ ENV_ALLOWED_HOST ]
+#     print(ALLOWED_HOSTS)
 
 # Application definition
 
@@ -57,6 +61,7 @@ INSTALLED_APPS = [
 
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

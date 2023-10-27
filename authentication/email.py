@@ -1,5 +1,5 @@
 
-from ..utils.email import BaseEmailMessage
+from utils.email import BaseEmailMessage
 
 class ActivationEmail(BaseEmailMessage):
     template_name = "email/activation.html"
