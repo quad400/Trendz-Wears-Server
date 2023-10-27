@@ -20,7 +20,7 @@ import dj_database_url
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-load_dotenv(os.path.join(BASE_DIR, ".env"))
+# load_dotenv(os.path.join(BASE_DIR, ".env"))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -31,14 +31,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 
 DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 
-if not DEBUG:
-    ALLOWED_HOSTS = ["trendzy.onrender.com"]
-ALLOWED_HOSTS = []
-# ENV_ALLOWED_HOST = os.environ.get("ENV_ALLOWED_HOST")
-# ALLOWED_HOSTS = []
-# if ENV_ALLOWED_HOST:
-#     ALLOWED_HOSTS = [ ENV_ALLOWED_HOST ]
-#     print(ALLOWED_HOSTS)
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(",")
 
 # Application definition
 
