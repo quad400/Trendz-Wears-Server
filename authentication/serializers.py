@@ -28,8 +28,10 @@ class UserCreateMixin:
     def perform_create(self, validated_data):
         with transaction.atomic():
             otp = random.randint(1000, 9999)
+            name = validated_data.pop("name")
             otp_expiry = datetime.now() + timedelta(minutes=3)
             user = User.objects.create_user(**validated_data)
+            user.name = name
             user.is_active = False
             user.otp = otp
             user.otp_expiry = otp_expiry

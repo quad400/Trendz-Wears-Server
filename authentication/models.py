@@ -8,20 +8,20 @@ from shortuuidfield import ShortUUIDField
 # User authentication information
 class UserAccountManager(BaseUserManager):
 
-    def create_user(self, name, email, password=None):
+    def create_user(self, email, password=None):
 
         if not email:
             raise ValueError("Email field is required")
 
         email = self.normalize_email(email)
-        user = self.model(email=email, name=name)
+        user = self.model(email=email)
 
         user.set_password(password)
         user.save(using=self._db)
 
         return user
 
-    def create_superuser(self, email, password=None):
+    def create_superuser(self,email, password=None):
         user = self.create_user(email, password)
 
         user.is_admin = True
@@ -46,7 +46,7 @@ class UserAccount(AbstractBaseUser,PermissionsMixin):
 
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
-
+    
     objects = UserAccountManager()
 
     USERNAME_FIELD = 'email'
