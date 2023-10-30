@@ -62,7 +62,11 @@ class UserCreateSerializer(UserCreateMixin, serializers.ModelSerializer):
                 {"password": serializer_error[api_settings.NON_FIELD_ERRORS_KEY]}
             )
         return attrs
-
+    
+    # def create(self, validated_data):
+    #     name = validated_data.get("name")
+    #     user = super().create(validated_data)
+    #     return user.save(name=name)
 
 
 class UserSerializer(serializers.ModelSerializer):

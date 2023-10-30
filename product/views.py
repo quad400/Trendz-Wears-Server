@@ -12,7 +12,7 @@ from .serializers import ProductSerializer, ProductImageSerializer, ProductColor
 
 class ProductViewSet(ModelViewSet):
     serializer_class = ProductSerializer
-    permission_classes = [IsAdminUser, ]
+    permission_classes = [AllowAny, ]
     queryset = Product.objects.all()
     lookup_field = "pk"
     pagination_class = pagination.LimitOffsetPagination
