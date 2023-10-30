@@ -173,8 +173,8 @@ EMAIL_USE_TLS = True
 
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(hours=2),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=60),
+    "REFRESH_TOKEN_LIFETIME": timedelta(weeks=52),
     "SIGNING_KEY": SECRET_KEY,
     "AUTH_HEADER_TYPES": ('Bearer',),
 }
