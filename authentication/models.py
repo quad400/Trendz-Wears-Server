@@ -4,7 +4,6 @@ from django.contrib.auth.models import (
 from django.core.validators import validate_email
 from shortuuidfield import ShortUUIDField
 
-
 # User authentication information
 class UserAccountManager(BaseUserManager):
 
@@ -31,7 +30,7 @@ class UserAccountManager(BaseUserManager):
 
 class Image(models.Model):
     id = ShortUUIDField(primary_key=True, editable=False, unique=True)
-    image = models.ImageField(upload_to="profile/")
+    image = models.ImageField(upload_to="profile/", blank=True)
 
 
 class UserAccount(AbstractBaseUser,PermissionsMixin):

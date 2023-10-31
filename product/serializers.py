@@ -6,7 +6,7 @@ from .models import (Product, ProductColor, ProductSizes, ProductImage)
 class ProductImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductImage
-        fields = ("id", "image",)
+        fields = ("image",)
 
     def validate_image(self, attr):
         if attr is None:
@@ -26,7 +26,7 @@ class ProductColorSerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    product_images = ProductImageSerializer(many=True, required=False, read_only=True)
+    product_images = serializers.H(many=True, required=False, read_only=True)
     product_colors = ProductColorSerializer(many=True, required=False, read_only=True)
     product_sizes = ProductSizeSerializer(many=True, required=False, read_only=True)
     timestamp = serializers.SerializerMethodField(read_only=True)

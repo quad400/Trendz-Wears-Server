@@ -32,7 +32,7 @@ class Product(models.Model):
 class ProductImage(models.Model):
     id = ShortUUIDField(primary_key=True, editable=False, unique=True)
     image_product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="product_images")
-    image = models.ImageField(upload_to="products/")
+    image = models.ImageField(upload_to="products/", blank=True)
 
     def __str__(self):
         return self.image_product.name
