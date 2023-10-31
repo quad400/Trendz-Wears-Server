@@ -52,7 +52,6 @@ INSTALLED_APPS = [
     'cloudinary',
     'drf_yasg',
     "rest_framework",
-    "cloudinary"
     # internal app
     'authentication',
     'product',
